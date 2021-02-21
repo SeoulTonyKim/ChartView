@@ -33,7 +33,7 @@ public struct BarChartView : View {
     var isFullWidth:Bool {
         return self.formSize == ChartForm.large
     }
-    public init(data:ChartData, title: String, legend: String? = nil, style: ChartStyle = Styles.barChartStyleOrangeLight, form: CGSize? = ChartForm.medium, dropShadow: Bool? = true, cornerImage:Image? = Image(systemName: "waveform.path.ecg"), valueSpecifier: String? = "%.1f"){
+    public init(data:ChartData, title: String, legend: String? = nil, style: ChartStyle = Styles.barChartStyleOrangeLight, form: CGSize? = ChartForm.medium, dropShadow: Bool? = true, cornerImage:Image? = Image(systemName: "waveform.path.ecg"), valueSpecifier: String? = "%@"){
         self.data = data
         self.title = title
         self.legend = legend
@@ -99,7 +99,7 @@ public struct BarChartView : View {
                 .onChanged({ value in
                     self.touchLocation = value.location.x/self.formSize.width
                     self.showValue = true
-                    self.currentValue = self.getCurrentValue()?.1 ?? 0
+                    self.currentValue = self.getCurrentValue()?.2 ?? 0
                     if(self.data.valuesGiven && self.formSize == ChartForm.medium) {
                         self.showLabelValue = true
                     }
@@ -129,7 +129,7 @@ public struct BarChartView : View {
         return min(self.formSize.width-110,max(10,(self.touchLocation * self.formSize.width) - 50))
     }
     
-    func getCurrentValue() -> (String,Double)? {
+    func getCurrentValue() -> (String,Double,String)? {
         guard self.data.points.count > 0 else { return nil}
         let index = max(0,min(self.data.points.count-1,Int(floor((self.touchLocation*self.formSize.width)/(self.formSize.width/CGFloat(self.data.points.count))))))
         return self.data.points[index]
