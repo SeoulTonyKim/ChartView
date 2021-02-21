@@ -23,7 +23,7 @@ public struct BarChartView : View {
     @State private var touchLocation: CGFloat = -1.0
     @State private var showValue: Bool = false
     @State private var showLabelValue: Bool = false
-    @State private var currentValue: Double = 0 {
+    @State private var currentValue: String = "" {
         didSet{
             if(oldValue != self.currentValue && self.showValue) {
                 HapticFeedback.playSelection()
@@ -58,7 +58,7 @@ public struct BarChartView : View {
                             .font(.headline)
                             .foregroundColor(self.colorScheme == .dark ? self.darkModeStyle.textColor : self.style.textColor)
                     }else{
-                        Text("\(self.currentValue, specifier: self.valueSpecifier)")
+                        Text(self.currentValue)
                             .font(.headline)
                             .foregroundColor(self.colorScheme == .dark ? self.darkModeStyle.textColor : self.style.textColor)
                     }
@@ -99,7 +99,7 @@ public struct BarChartView : View {
                 .onChanged({ value in
                     self.touchLocation = value.location.x/self.formSize.width
                     self.showValue = true
-                    self.currentValue = self.getCurrentValue()?.2 ?? 0
+                    self.currentValue = self.getCurrentValue()?.2 ?? ""
                     if(self.data.valuesGiven && self.formSize == ChartForm.medium) {
                         self.showLabelValue = true
                     }
